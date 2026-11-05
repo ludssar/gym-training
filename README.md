@@ -21,6 +21,14 @@ npm run dev -- --host 0.0.0.0
 
 Apri sul telefono l'indirizzo di rete locale indicato da Vite. In questa modalità i dati salvati nel browser del Mac e quelli del telefono sono separati.
 
+## Sul telefono
+
+L'app è pubblicata su **https://ludssar.github.io/gym-training/** e si aggiorna da sola a ogni `git push` sul ramo `main` (GitHub Actions → Pages).
+
+Su Android apri l'indirizzo con Chrome e tocca **Installa** nel riquadro in alto (oppure menu ⋮ → *Installa app*). Si apre a schermo intero, funziona anche senza rete e durante l'allenamento tiene lo schermo acceso. Su iPhone: Safari → Condividi → *Aggiungi alla schermata Home*.
+
+Lo storico resta sul dispositivo dove lo registri: per averlo uguale su Mac e telefono serve la sincronizzazione qui sotto. Se usi Supabase, aggiungi `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` anche nei *Secrets* del repository GitHub (Settings → Secrets and variables → Actions) e ripubblica.
+
 ## Dati e sincronizzazione
 
 Senza configurazione cloud, il piano viene salvato nel browser del dispositivo. Per sincronizzare i dispositivi:

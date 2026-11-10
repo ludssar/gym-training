@@ -33,5 +33,6 @@ export type Workout = {
 
 export type TrainingPlan = {
   name: string
+  version?: number
   workouts: Workout[]
 }

@@ -439,186 +439,182 @@ const wednesdaySections = [
   }),
 ]
 
-const thursdayExercises = [
-  warmup('Slanci controllati per femorali', '10 per gamba', 'Slanci dinamici controllati, senza rimbalzi e senza forzare il fine corsa.', 2),
-  warmup('Mobilità flessori dell’anca in affondo', '8 per lato', 'In posizione di affondo, mobilizza i flessori mantenendo il busto stabile.', 2),
-  warmup('Rotazioni e circonduzioni del bacino', '10 per lato', 'Muovi il bacino con circonduzioni ampie ma confortevoli.', 2),
-  exercise({
-    name: 'Stiff-legged deadlift con bilanciere',
-    muscleGroup: 'Catena posteriore',
-    sets: 3,
-    reps: '8',
-    instructions: 'Nel tri-set, controlla la discesa per 3–4 sec, fai una pausa di 1 sec nel punto di massimo allungamento e risali in modo deciso. Pausa di 10 sec prima dell’esercizio seguente.',
-    restSeconds: 10,
-  }),
-  exercise({
-    name: 'Hanging leg raise alla sbarra',
-    muscleGroup: 'Core',
-    sets: 3,
-    reps: '12',
-    instructions: 'Solleva le ginocchia al petto o le gambe tese; controlla la discesa senza dondolare. Pausa di 10 sec prima del plank.',
-    restSeconds: 10,
-    weightTracked: false,
-  }),
-  exercise({
-    name: 'Plank isometrico',
-    muscleGroup: 'Core',
-    sets: 3,
-    reps: '60 sec',
-    instructions: 'A corpo libero o con disco da 5–10 kg alto sulle scapole. Mantieni il corpo allineato; recupera 90 sec alla fine del giro.',
-    restSeconds: 90,
-  }),
-  exercise({
-    name: 'Panca inclinata con manubri',
-    muscleGroup: 'Petto',
-    sets: 3,
-    reps: '8',
-    instructions: 'Panca inclinata a 30°–45°; controlla la discesa e spingi con decisione.',
-    restSeconds: 90,
-  }),
-  exercise({
-    name: 'Leg extension di richiamo',
-    muscleGroup: 'Quadricipiti',
-    sets: 3,
-    reps: '12',
-    instructions: 'Mantieni una spremitura isometrica di 1 sec alla massima estensione.',
-    restSeconds: 90,
-  }),
-  exercise({
-    name: 'Banded face pull',
-    muscleGroup: 'Postura · cuffia dei rotatori',
-    sets: 3,
-    reps: '12',
-    instructions: 'Ancora l’elastico in alto. Tira verso la fronte separando le mani ed extraruotando i gomiti.',
-    restSeconds: 60,
-  }),
-]
-const thursdaySections = [
-  section({
-    title: 'Riscaldamento',
-    description: '5 min · mobilità dinamica di femorali, anche e bacino.',
-    durationMinutes: 5,
-    exercises: thursdayExercises.slice(0, 3),
-  }),
-  section({
-    title: 'Tri-set: catena posteriore e core',
-    description: '3 giri · 10 sec tra gli esercizi · recupero 90 sec alla fine di ogni giro.',
-    durationMinutes: 15,
-    rounds: 3,
-    restAfterRound: '90 sec',
-    exercises: thursdayExercises.slice(3, 6),
-  }),
-  section({
-    title: 'Panca inclinata con manubri',
-    description: '3 serie · panca a 30°–45° · recupero 90 sec.',
-    durationMinutes: 8,
-    exercises: [thursdayExercises[6]],
-  }),
-  section({
-    title: 'Leg extension di richiamo',
-    description: '3 serie · 1 sec di contrazione in alto · recupero 90 sec.',
-    durationMinutes: 8,
-    exercises: [thursdayExercises[7]],
-  }),
-  section({
-    title: 'Finisher: postura e cuffia dei rotatori',
-    description: '3 serie · recupero 60 sec.',
-    durationMinutes: 8,
-    exercises: [thursdayExercises[8]],
-  }),
-]
+function thursdayWorkout(): Workout {
+  const exercises = [
+    warmup('Slanci controllati per femorali', '10 per gamba', 'Allungamento dinamico: slanci controllati, senza rimbalzi e senza forzare il fine corsa.', 2),
+    warmup('Mobilità flessori dell’anca in affondo', '8 per lato', 'In posizione di affondo, mobilizza i flessori dell’anca mantenendo il busto stabile.', 2),
+    warmup('Rotazioni e circonduzioni del bacino', '10 per lato', 'Muovi il bacino con rotazioni e circonduzioni ampie ma confortevoli.', 2),
+    exercise({
+      name: 'Stiff-legged deadlift con bilanciere',
+      muscleGroup: 'Catena posteriore',
+      sets: 3,
+      reps: '8',
+      instructions: 'Discesa eccentrica controllata in 3–4 sec, pausa immobile di 1 sec nel punto di massimo allungamento in basso, risalita esplosiva. Poi 10 sec di pausa e passa all’hanging leg raise.',
+      restSeconds: 10,
+    }),
+    exercise({
+      name: 'Hanging leg raise alla sbarra',
+      muscleGroup: 'Core',
+      sets: 3,
+      reps: '12',
+      instructions: 'Solleva le ginocchia al petto o le gambe tese, con controllo completo della fase di discesa e senza dondolare. Poi 10 sec di pausa e passa al plank.',
+      restSeconds: 10,
+      weightTracked: false,
+    }),
+    exercise({
+      name: 'Plank isometrico',
+      muscleGroup: 'Core',
+      sets: 3,
+      reps: '60 sec',
+      instructions: 'A corpo libero o con un disco da 5–10 kg posizionato alto sulle scapole. Mantieni il corpo allineato; recupero di 90 sec a fine giro.',
+      restSeconds: 90,
+    }),
+    exercise({
+      name: 'Panca inclinata con manubri',
+      muscleGroup: 'Petto',
+      sets: 3,
+      reps: '8',
+      instructions: 'Panca inclinata a 30°–45°: discesa controllata e spinta decisa.',
+      restSeconds: 90,
+    }),
+    exercise({
+      name: 'Leg extension di richiamo',
+      muscleGroup: 'Quadricipiti',
+      sets: 3,
+      reps: '12',
+      instructions: 'Spremitura isometrica di 1 sec in cima, alla massima estensione.',
+      restSeconds: 90,
+    }),
+    exercise({
+      name: 'Banded face pull',
+      muscleGroup: 'Postura · cuffia dei rotatori',
+      sets: 3,
+      reps: '12',
+      instructions: 'Elastico ancorato in alto alla sbarra o alla lat machine. Tira verso la fronte separando le mani ed extraruotando i gomiti.',
+      restSeconds: 60,
+    }),
+  ]
+  const sections = [
+    section({
+      title: 'Riscaldamento',
+      description: '5 min · mobilità dinamica di femorali, anche e bacino.',
+      durationMinutes: 5,
+      exercises: exercises.slice(0, 3),
+    }),
+    section({
+      title: 'Tri-set: catena posteriore e core',
+      description: '3 giri totali · 10 sec di pausa tra gli esercizi · recupero 90 sec a fine giro.',
+      durationMinutes: 15,
+      rounds: 3,
+      restAfterRound: '90 sec',
+      exercises: exercises.slice(3, 6),
+    }),
+    section({
+      title: 'Panca inclinata con manubri',
+      description: '3 serie · panca a 30°–45° · recupero 90 sec tra le serie.',
+      durationMinutes: 8,
+      exercises: [exercises[6]],
+    }),
+    section({
+      title: 'Leg extension di richiamo',
+      description: '3 serie · 1 sec di spremitura in cima · recupero 90 sec tra le serie.',
+      durationMinutes: 8,
+      exercises: [exercises[7]],
+    }),
+    section({
+      title: 'Finisher: postura e cuffia dei rotatori',
+      description: '3 serie · recupero 60 sec tra le serie.',
+      durationMinutes: 8,
+      exercises: [exercises[8]],
+    }),
+  ]
+  return workout(
+    'Giovedì',
+    'Catena posteriore & core',
+    'Core avanzato · cuffia dei rotatori · 50 min',
+    50,
+    sections,
+    exercises,
+  )
+}
 
-const fridayExercises = [
-  warmup('World’s greatest stretch', '5 per lato', 'Esegui un affondo basso e aggiungi una rotazione toracica controllata.', 2),
-  warmup('Aperture d’anca dinamiche', '8 per lato', 'Mobilità dinamica dell’anca con movimenti fluidi.', 2),
-  warmup('Mobilità caviglie alla parete', '8 per lato', 'Porta il ginocchio in avanti verso la parete mantenendo il tallone a terra.', 2),
-  exercise({
-    name: 'Pull-through leggero con elastico',
-    muscleGroup: 'Attivazione',
-    sets: 2,
-    reps: '10',
-    instructions: 'Usa un elastico leggero per attivare la catena posteriore e le spalle; non cercare affaticamento.',
-    restSeconds: 0,
-    weightTracked: false,
-  }),
-  exercise({
-    name: 'Ankle pogo hops reattivi',
-    muscleGroup: 'Attivazione neurale',
-    sets: 2,
-    reps: '6',
-    instructions: 'Saltelli rapidi sulle punte con caviglie reattive e rigide; ricerca elasticità senza accumulare fatica.',
-    restSeconds: 0,
-    weightTracked: false,
-  }),
-  exercise({
-    name: 'Push-up pliometrici',
-    muscleGroup: 'Attivazione neurale',
-    sets: 2,
-    reps: '4',
-    instructions: 'Spinta secca per staccare leggermente le mani da terra, senza arrivare a fatica.',
-    restSeconds: 0,
-    weightTracked: false,
-  }),
-  exercise({
-    name: 'Foam roller: quadricipiti',
-    muscleGroup: 'Rilassamento',
-    sets: 1,
-    reps: '60 sec',
-    instructions: 'Un passaggio controllato sul distretto, senza pressione dolorosa.',
-    restSeconds: 0,
-    weightTracked: false,
-  }),
-  exercise({
-    name: 'Foam roller: femorali',
-    muscleGroup: 'Rilassamento',
-    sets: 1,
-    reps: '60 sec',
-    instructions: 'Un passaggio controllato sul distretto, senza pressione dolorosa.',
-    restSeconds: 0,
-    weightTracked: false,
-  }),
-  exercise({
-    name: 'Foam roller: banda ileo-tibiale',
-    muscleGroup: 'Rilassamento',
-    sets: 1,
-    reps: '60 sec',
-    instructions: 'Un passaggio controllato sul distretto, senza pressione dolorosa.',
-    restSeconds: 0,
-    weightTracked: false,
-  }),
-  exercise({
-    name: 'Foam roller: tratto toracico',
-    muscleGroup: 'Rilassamento',
-    sets: 1,
-    reps: '60 sec',
-    instructions: 'Un passaggio controllato sul tratto toracico, senza forzare la colonna.',
-    restSeconds: 0,
-    weightTracked: false,
-  }),
-]
-const fridaySections = [
-  section({
-    title: 'Mobilità dinamica e decompressione',
-    description: '10 min · mobilità di anche, caviglie e colonna; attivazione leggera.',
-    durationMinutes: 10,
-    exercises: fridayExercises.slice(0, 4),
-  }),
-  section({
-    title: 'Attivazione neurale esplosiva',
-    description: '5 min · segnale rapido al sistema nervoso, senza accumulare fatica.',
-    durationMinutes: 5,
-    exercises: fridayExercises.slice(4, 6),
-  }),
-  section({
-    title: 'Rilassamento e miorilassamento',
-    description: '5 min · un passaggio da 60 sec per ogni distretto.',
-    durationMinutes: 5,
-    exercises: fridayExercises.slice(6),
-  }),
-]
+function fridayWorkout(): Workout {
+  const exercises = [
+    warmup('World’s greatest stretch', '5 per lato', 'Affondo basso con torsione toracica controllata.', 2),
+    warmup('Aperture d’anca dinamiche e mobilità caviglie alla parete', '8 per lato', 'Aperture d’anca fluide, poi porta il ginocchio in avanti verso la parete mantenendo il tallone a terra.', 2),
+    exercise({
+      name: 'Pull-through leggero con elastico',
+      muscleGroup: 'Attivazione',
+      sets: 2,
+      reps: '10',
+      instructions: 'Elastico leggero per attivare catena posteriore e spalle; non cercare affaticamento.',
+      restSeconds: 0,
+      weightTracked: false,
+    }),
+    exercise({
+      name: 'Ankle pogo hops reattivi',
+      muscleGroup: 'Attivazione neurale',
+      sets: 2,
+      reps: '6',
+      instructions: 'Saltelli rapidissimi sulle punte irrigidendo la caviglia: focus su elasticità e zero affaticamento.',
+      restSeconds: 0,
+      weightTracked: false,
+    }),
+    exercise({
+      name: 'Push-up pliometrici a corpo libero',
+      muscleGroup: 'Attivazione neurale',
+      sets: 2,
+      reps: '4',
+      instructions: 'Spinta secca per staccare leggermente le mani da terra, senza arrivare a fatica.',
+      restSeconds: 0,
+      weightTracked: false,
+    }),
+    exercise({
+      name: 'Foam roller controllato',
+      muscleGroup: 'Rilassamento',
+      sets: 4,
+      reps: '60 sec per distretto',
+      instructions: 'Un passaggio da 60 sec per distretto, una serie per ciascuno: 1 quadricipiti, 2 femorali, 3 banda ileo-tibiale, 4 tratto toracico. Pressione mai dolorosa.',
+      restSeconds: 0,
+      weightTracked: false,
+    }),
+  ]
+  const sections = [
+    section({
+      title: 'Mobilità dinamica e decompressione',
+      description: '10 min · mobilità di anche, caviglie e colonna; attivazione leggera.',
+      durationMinutes: 10,
+      exercises: exercises.slice(0, 3),
+    }),
+    section({
+      title: 'Attivazione neurale esplosiva',
+      description: '5 min · nessun accumulo di acido lattico: solo un segnale ad alta frequenza al sistema nervoso prima della partita del sabato.',
+      durationMinutes: 5,
+      exercises: exercises.slice(3, 5),
+    }),
+    section({
+      title: 'Rilassamento e miorilassamento',
+      description: '5 min · foam roller: un passaggio da 60 sec per distretto muscolare.',
+      durationMinutes: 5,
+      exercises: [exercises[5]],
+    }),
+  ]
+  return workout(
+    'Venerdì',
+    'Scarico pre-gara',
+    'Attivazione neurale · max 20 min',
+    20,
+    sections,
+    exercises,
+  )
+}
+
+/** Versione del programma: quando cambia, i piani salvati vengono aggiornati da migratePlan. */
+export const PLAN_VERSION = 2
 
 export const initialPlan: TrainingPlan = {
   name: 'Gym Training',
+  version: PLAN_VERSION,
   workouts: [
     workout(
       'Lunedì · A',
@@ -638,9 +634,62 @@ export const initialPlan: TrainingPlan = {
     ),
     workout('Martedì', 'Spinta esplosiva', 'Military press · finisher d’impatto', 50, tuesdaySections, tuesdayExercises),
     workout('Mercoledì', 'Trazione & rotazione', 'Schiena · potenza rotazionale · grip', 50, wednesdaySections, wednesdayExercises),
-    workout('Giovedì', 'Catena posteriore & core', 'Core avanzato · cuffia dei rotatori', 50, thursdaySections, thursdayExercises),
-    workout('Venerdì', 'Scarico pre-gara', 'Attivazione neurale · max 20 min', 20, fridaySections, fridayExercises),
+    thursdayWorkout(),
+    fridayWorkout(),
   ],
+}
+
+function normalizeName(text: string) {
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('it-IT')
+    .trim()
+}
+
+/**
+ * Sostituisce un giorno con la nuova versione mantenendo l'id del giorno e,
+ * per gli esercizi con lo stesso nome, id e carico già impostato (così lo storico resta collegato).
+ */
+function carryOver(fresh: Workout, old: Workout): Workout {
+  const oldByName = new Map(old.exercises.map((item) => [normalizeName(item.name), item]))
+  const idMap = new Map<string, string>()
+  const exercises = fresh.exercises.map((item) => {
+    const previous = oldByName.get(normalizeName(item.name))
+    if (!previous) return item
+    idMap.set(item.id, previous.id)
+    return { ...item, id: previous.id, weightKg: previous.weightKg }
+  })
+  return {
+    ...fresh,
+    id: old.id,
+    exercises,
+    sections: fresh.sections?.map((block) => ({
+      ...block,
+      exerciseIds: block.exerciseIds.map((id) => idMap.get(id) ?? id),
+    })),
+  }
+}
+
+const DAY_UPDATES: Record<number, Record<string, () => Workout>> = {
+  2: { giovedi: thursdayWorkout, venerdi: fridayWorkout },
+}
+
+/** Porta un piano salvato all'ultima versione del programma. */
+export function migratePlan(plan: TrainingPlan): TrainingPlan {
+  let current = plan
+  for (let version = (plan.version ?? 1) + 1; version <= PLAN_VERSION; version += 1) {
+    const updates = DAY_UPDATES[version] ?? {}
+    current = {
+      ...current,
+      version,
+      workouts: current.workouts.map((item) => {
+        const make = updates[normalizeName(item.day.split('·')[0])]
+        return make ? carryOver(make(), item) : item
+      }),
+    }
+  }
+  return current
 }
 
 export function isTrainingPlan(value: unknown): value is TrainingPlan {

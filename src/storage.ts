@@ -1,4 +1,4 @@
-import { initialPlan, isTrainingPlan } from './data'
+import { initialPlan, isTrainingPlan, migratePlan } from './data'
 import type { TrainingPlan } from './types'
 
 const STORAGE_KEY = 'gym-training.plan.v1'
@@ -23,7 +23,7 @@ export function readStoredPlan(): StoredPlan {
       }
     }
 
-    return { plan: parsed, canSave: true, warning: null }
+    return { plan: migratePlan(parsed), canSave: true, warning: null }
   } catch {
     return {
       plan: initialPlan,

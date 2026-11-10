@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import type { User } from '@supabase/supabase-js'
-import { createId, initialPlan, isTrainingPlan, videoSearchUrl } from './data'
+import { createId, initialPlan, isTrainingPlan, migratePlan, videoSearchUrl } from './data'
 import { isCloudConfigured, supabase } from './cloud'
 import { clearStoredPlan, readStoredPlan, writeStoredPlan } from './storage'
 import type { Exercise, TrainingPlan, Workout, WorkoutSection } from './types'
@@ -263,7 +263,7 @@ function App() {
           setCloudMessage('Il piano salvato nel cloud non è valido; i dati locali non sono stati sostituiti.')
           return
         }
-        setPlan(data.plan)
+        setPlan(migratePlan(data.plan))
         setCanSave(true)
         setCloudStatus('synced')
         setCloudReady(true)

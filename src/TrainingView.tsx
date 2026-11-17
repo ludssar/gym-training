@@ -189,7 +189,7 @@ export function TrainingView({
                       const previous = previousPerformance(log, historyKey(exercise), selectedDate)
                       return (
                         <ExerciseLogger
-                          key={exercise.id}
+                          key={`${exercise.id}-${exercise.restSeconds}`}
                           exercise={exercise}
                           entry={session?.exercises[exercise.id]}
                           previous={previous}
@@ -283,6 +283,30 @@ type LoggerProps = {
 }
 
 function ExerciseLogger({ exercise, entry, previous, suggestion, onChange }: LoggerProps) {
+  const defaultRestSeconds = Math.max(0, Math.floor(exercise.restSeconds))
+  const [restDuration, setRestDuration] = useState(defaultRestSeconds)
+  const [restRemaining, setRestRemaining] = useState(defaultRestSeconds)
+  const [restEndsAt, setRestEndsAt] = useState<number | null>(null)
+  const [restFinished, setRestFinished] = useState(false)
+  const restRunning = restEndsAt !== null
+
+  useEffect(() => {
+    if (restEndsAt === null) return
+
+    const updateRemaining = () => {
+      const remaining = Math.max(0, Math.ceil((restEndsAt - Date.now()) / 1000))
+      setRestRemaining(remaining)
+      if (remaining === 0) {
+        setRestEndsAt(null)
+        setRestFinished(true)
+      }
+    }
+
+    updateRemaining()
+    const interval = window.setInterval(updateRemaining, 250)
+    return () => window.clearInterval(interval)
+  }, [restEndsAt])
+
   const target = parseTarget(exercise.reps)
   const tracksWeight = exercise.weightTracked !== false
   const current = entry ?? newExerciseLog(exercise)
@@ -349,6 +373,28 @@ function ExerciseLogger({ exercise, entry, previous, suggestion, onChange }: Log
     return Number.isFinite(number) && number >= 0 ? number : null
   }
 
+  const startRestTimer = () => {
+    const duration = restRemaining > 0 ? restRemaining : restDuration
+    if (duration <= 0) return
+    setRestRemaining(duration)
+    setRestFinished(false)
+    setRestEndsAt(Date.now() + duration * 1000)
+  }
+
+  const pauseRestTimer = () => {
+    if (restEndsAt === null) return
+    const remaining = Math.max(0, Math.ceil((restEndsAt - Date.now()) / 1000))
+    setRestRemaining(remaining)
+    setRestEndsAt(null)
+    setRestFinished(remaining === 0)
+  }
+
+  const resetRestTimer = () => {
+    setRestEndsAt(null)
+    setRestRemaining(restDuration)
+    setRestFinished(false)
+  }
+
   return (
     <article className={`logger ${allDone ? 'logger-done' : ''}`}>
       <header className="logger-head">
@@ -362,6 +408,49 @@ function ExerciseLogger({ exercise, entry, previous, suggestion, onChange }: Log
         </div>
         <span className="logger-count">{doneCount}/{sets.length}</span>
       </header>
+
+      <div className={`rest-timer ${restFinished ? 'rest-timer-finished' : ''}`}>
+        <div className="rest-timer-display">
+          <span>Recupero</span>
+          <strong aria-label={`${Math.floor(restRemaining / 60)} minuti e ${restRemaining % 60} secondi`}>
+            {String(Math.floor(restRemaining / 60)).padStart(2, '0')}:
+            {String(restRemaining % 60).padStart(2, '0')}
+          </strong>
+        </div>
+        <label className="rest-timer-duration">
+          <span>Durata · sec</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            min={0}
+            step={1}
+            aria-label={`Durata recupero per ${exercise.name} in secondi`}
+            value={restDuration}
+            disabled={restRunning}
+            onChange={(event) => {
+              const value = Number(event.target.value)
+              if (!Number.isFinite(value) || value < 0) return
+              const duration = Math.floor(value)
+              setRestDuration(duration)
+              setRestRemaining(duration)
+              setRestFinished(false)
+            }}
+          />
+        </label>
+        <div className="rest-timer-controls">
+          <button
+            className="rest-timer-button rest-timer-start"
+            onClick={restRunning ? pauseRestTimer : startRestTimer}
+            disabled={!restRunning && restRemaining <= 0 && restDuration <= 0}
+          >
+            {restRunning ? 'Pausa' : 'Avvia'}
+          </button>
+          <button className="rest-timer-button" onClick={resetRestTimer}>Azzera</button>
+        </div>
+        <span className="rest-timer-status" role="status" aria-live="polite">
+          {restFinished ? 'Recupero terminato' : restRunning ? 'Timer in corso' : 'Pronto'}
+        </span>
+      </div>
 
       {previous && !checkOnly && (
         <p className="logger-previous">

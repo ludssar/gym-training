@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Calendar } from './Calendar'
 import { Icon } from './Icon'
 import { videoSearchUrl } from './data'
@@ -288,6 +288,9 @@ function ExerciseLogger({ exercise, entry, previous, suggestion, onChange }: Log
   const [restRemaining, setRestRemaining] = useState(defaultRestSeconds)
   const [restEndsAt, setRestEndsAt] = useState<number | null>(null)
   const [restFinished, setRestFinished] = useState(false)
+  const [restAudioUnavailable, setRestAudioUnavailable] = useState(false)
+  const audioContextRef = useRef<AudioContext | null>(null)
+  const restAlarmPlayedRef = useRef(false)
   const restRunning = restEndsAt !== null
 
   useEffect(() => {
@@ -297,6 +300,10 @@ function ExerciseLogger({ exercise, entry, previous, suggestion, onChange }: Log
       const remaining = Math.max(0, Math.ceil((restEndsAt - Date.now()) / 1000))
       setRestRemaining(remaining)
       if (remaining === 0) {
+        if (!restAlarmPlayedRef.current) {
+          restAlarmPlayedRef.current = true
+          if (!playRestAlarm(audioContextRef.current)) setRestAudioUnavailable(true)
+        }
         setRestEndsAt(null)
         setRestFinished(true)
       }
@@ -376,6 +383,18 @@ function ExerciseLogger({ exercise, entry, previous, suggestion, onChange }: Log
   const startRestTimer = () => {
     const duration = restRemaining > 0 ? restRemaining : restDuration
     if (duration <= 0) return
+    const AudioContextConstructor = window.AudioContext
+    if (!AudioContextConstructor) {
+      setRestAudioUnavailable(true)
+    } else {
+      const audioContext = audioContextRef.current ?? new AudioContextConstructor()
+      audioContextRef.current = audioContext
+      void audioContext.resume().then(
+        () => setRestAudioUnavailable(false),
+        () => setRestAudioUnavailable(true),
+      )
+    }
+    restAlarmPlayedRef.current = false
     setRestRemaining(duration)
     setRestFinished(false)
     setRestEndsAt(Date.now() + duration * 1000)
@@ -387,12 +406,17 @@ function ExerciseLogger({ exercise, entry, previous, suggestion, onChange }: Log
     setRestRemaining(remaining)
     setRestEndsAt(null)
     setRestFinished(remaining === 0)
+    if (remaining === 0 && !restAlarmPlayedRef.current) {
+      restAlarmPlayedRef.current = true
+      if (!playRestAlarm(audioContextRef.current)) setRestAudioUnavailable(true)
+    }
   }
 
   const resetRestTimer = () => {
     setRestEndsAt(null)
     setRestRemaining(restDuration)
     setRestFinished(false)
+    restAlarmPlayedRef.current = false
   }
 
   return (
@@ -448,7 +472,13 @@ function ExerciseLogger({ exercise, entry, previous, suggestion, onChange }: Log
           <button className="rest-timer-button" onClick={resetRestTimer}>Azzera</button>
         </div>
         <span className="rest-timer-status" role="status" aria-live="polite">
-          {restFinished ? 'Recupero terminato' : restRunning ? 'Timer in corso' : 'Pronto'}
+          {restAudioUnavailable
+            ? 'Audio non disponibile'
+            : restFinished
+              ? 'Recupero terminato'
+              : restRunning
+                ? 'Timer in corso'
+                : 'Pronto'}
         </span>
       </div>
 
@@ -557,6 +587,29 @@ function ExerciseLogger({ exercise, entry, previous, suggestion, onChange }: Log
       </footer>
     </article>
   )
+}
+
+function playRestAlarm(audioContext: AudioContext | null) {
+  if (!audioContext || audioContext.state !== 'running') return false
+
+  const oscillator = audioContext.createOscillator()
+  const volume = audioContext.createGain()
+  const start = audioContext.currentTime
+  oscillator.type = 'sine'
+  oscillator.frequency.value = 880
+  volume.gain.setValueAtTime(0, start)
+  for (let beep = 0; beep < 3; beep += 1) {
+    const beepStart = start + beep * 0.3
+    volume.gain.setValueAtTime(0, beepStart)
+    volume.gain.linearRampToValueAtTime(0.2, beepStart + 0.02)
+    volume.gain.setValueAtTime(0.2, beepStart + 0.16)
+    volume.gain.linearRampToValueAtTime(0, beepStart + 0.2)
+  }
+  oscillator.connect(volume)
+  volume.connect(audioContext.destination)
+  oscillator.start(start)
+  oscillator.stop(start + 0.85)
+  return true
 }
 
 // ---------- Riepilogo a fine allenamento ----------
